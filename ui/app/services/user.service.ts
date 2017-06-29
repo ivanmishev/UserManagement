@@ -6,6 +6,7 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import {Observable} from "rxjs/Rx";
+import {User} from "../../User";
 
 const USER_SERVICE_URL = 'http://localhost:9000';
 const USER_URL = "users";
@@ -13,6 +14,7 @@ const USER_URL = "users";
 @Injectable()
 export class UserService {
   private userUrl: string;
+  private user: any = {};
 
   constructor(private http:Http) {
     console.log("User service initialized...");
@@ -29,14 +31,18 @@ export class UserService {
     return this.http.get(this.userUrl).map(res => res.json());
   }
 
-  deleteUser(email:string) {
-    this.userUrl = USER_SERVICE_URL + "/" + USER_URL + "/" + email;
+  deleteUser(userId: number) {
+    this.userUrl = USER_SERVICE_URL + "/" + USER_URL + "/" + userId;
     return this.http.delete(this.userUrl).map(res => res.json());
   }
 
-  updateUser(firstName:string, lastName:string, email:string, birthDate:number) {
-    this.userUrl = USER_SERVICE_URL + "/" + USER_URL + "/" + email;
-    return this.http.post(this.userUrl, "{body of an user}").map(res => res.json());
+  createUser(firstName: string, lastName: string, email: string, birthDate: Date){
+    this.userUrl = USER_SERVICE_URL + "/" + USER_URL;
+    this.user.firstName = firstName;
+    this.user.lastName = lastName;
+    this.user.email = email;
+    this.user.birthDate = new Date(birthDate).getTime();
+    return this.http.post(this.userUrl, this.user).map(res => res.json());
   }
 
 }
