@@ -1,0 +1,6 @@
+.git
+.gitignore
+*.spec*.ts
+favicon.ico
+LICENSE
+non-essential-files.txt
