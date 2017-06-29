@@ -1,0 +1,19 @@
+server:
+  port: 9000
+  address: localhost
+
+spring:
+  application:
+    name: user
+  datasource:
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://127.0.0.1:3306/usermanagementdb
+    username: admin
+    password: admin
+    tomcat:
+      initialSize: 1
+      maxActive: 2
+  jpa:
+    database: MYSQL
+    hibernate:
+      use-new-id-generator-mappings: false
