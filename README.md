@@ -1,6 +1,6 @@
 ########
 System prerequisites:
-1. Running MySql server 5.7 or higher
+1. Running MySql server `v5.7` or higher
 2. Importing sqlScipt/usermanagementdb.sql to MySql server
 3. Change username/password for spring datasource from services\user\src\main\resources\application.yml to be valid username/password for MySql
 4. maven
