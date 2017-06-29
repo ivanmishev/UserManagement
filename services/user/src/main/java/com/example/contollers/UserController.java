@@ -1,6 +1,8 @@
 package com.example.contollers;
 
 import com.example.beans.User;
+import com.example.repositories.UserRepository;
+
 import org.hibernate.sql.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.example.repositories.UserRepository;
 
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -53,17 +56,23 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @RequestMapping(method = POST, consumes = HAL_JSON_VALUE, produces = HAL_JSON_VALUE)
-    public ResponseEntity<User> create(@RequestBody User user) {
-        user = userService.save(user);
-        logger.info("Created user: {}", user);
-        return ResponseEntity
-                .created(ControllerLinkBuilder.linkTo(UserController.class).slash(user.getUserId()).toUri())
-                .body(user);
+    @RequestMapping(method = POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = HAL_JSON_VALUE)
+    public ResponseEntity create(@RequestBody User user) {
+        try {
+            user = userService.save(user);
+            logger.info("Created user: {}", user);
+            return ResponseEntity
+                    .created(ControllerLinkBuilder.linkTo(UserController.class).slash(user.getUserId()).toUri())
+                    .body(user);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Error Message " + e.getMessage() );
+        }
     }
 
-    @RequestMapping(method = PUT, consumes = HAL_JSON_VALUE, produces = HAL_JSON_VALUE)
-    public ResponseEntity<User> update(@Validated({ Update.class }) @RequestBody User user) {
+    @RequestMapping(method = PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = HAL_JSON_VALUE)
+    public ResponseEntity<User> update(@Validated({Update.class}) @RequestBody User user) {
         if (userService.findOne(user.getUserId()) == null) {
             throw new IllegalArgumentException("User is not found for the provided id " + user.getUserId());
         }
@@ -78,6 +87,4 @@ public class UserController {
         logger.info("Deleted user with id: {}", userId);
         return ResponseEntity.noContent().build();
     }
-
-
 }

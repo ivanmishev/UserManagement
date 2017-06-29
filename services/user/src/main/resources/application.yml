@@ -8,7 +8,7 @@ spring:
   datasource:
     driver-class-name: org.gjt.mm.mysql.Driver
     url: jdbc:mysql://127.0.0.1:3306/usermanagementdb
-    username: admin
+    username: root
     password: admin
     tomcat:
       initialSize: 1
