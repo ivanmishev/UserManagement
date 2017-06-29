@@ -7,14 +7,14 @@ import {AppComponent}  from './app.component';
 import {AboutComponent} from "./components/about/about.component";
 import {SearchComponent} from "./components/search/search.component";
 import {routing} from "./app.routing";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 
 
 @NgModule({
-  imports: [BrowserModule, routing, FormsModule, HttpModule, Ng2Bs3ModalModule],
+  imports: [BrowserModule, routing, FormsModule, HttpModule, Ng2Bs3ModalModule, ReactiveFormsModule],
   declarations: [AppComponent, NavbarComponent, SearchComponent, AboutComponent],
   bootstrap: [AppComponent]
 })
